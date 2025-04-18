@@ -4,4 +4,3 @@
     msg: "Rebooting to apply cgroup kernel changes"
     connect_timeout: 5
     reboot_timeout: 300
-    
