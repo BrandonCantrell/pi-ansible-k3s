@@ -12,6 +12,16 @@
   hosts: all
   become: true
 
+  pre_tasks:
+    - name: Show message if no users are defined
+      ansible.builtin.debug:
+        msg: "Skipping user creation play: no users were defined in 'additional_users'."
+      when: additional_users is not defined or additional_users | length == 0
+
+    - name: End play if no users are defined
+      ansible.builtin.meta: end_play
+      when: additional_users is not defined or additional_users | length == 0
+
   tasks:
 
     - name: Create system users

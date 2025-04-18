@@ -1,3 +1,4 @@
+---
 # This inventory defines the hosts in your Raspberry Pi K3s cluster.
 # Each host gets an IP address and a role designation (control node or not).
 # Common SSH connection settings are handled in group_vars/all.yml.
@@ -10,15 +11,6 @@ all:
         pi5-control-1:
           ansible_host: 192.168.4.10
           k3s_control_node: true
-        # pi5-control-2:
-        #   ansible_host: 192.168.1.11
-        #   k3s_control_node: true
         pi5-agent-1:
           ansible_host: 192.168.4.11
           k3s_control_node: false
-        # pi5-agent-2:
-        #   ansible_host: 192.168.1.13
-        #   k3s_control_node: false
-        # pi5-agent-3:
-        #   ansible_host: 192.168.1.14
-        #   k3s_control_node: false
