@@ -3,3 +3,7 @@ roles:
   - name: xanmanning.k3s
     src: https://github.com/PyratLabs/ansible-role-k3s
     version: v3.4.0
+
+collections:
+  - name: kubernetes.core
+    version: 2.4.0  # Use a known stable version, or omit for latest

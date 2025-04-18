@@ -6,26 +6,30 @@ on:
       - '**.yml'
       - '**.yaml'
   pull_request:
+    paths:
+      - '**.yml'
+      - '**.yaml'
 
 jobs:
-  lint:
+  ansible-lint:
+    name: Run ansible-lint
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.x'
 
-      - name: Install linting tools
+      - name: Install Ansible and Ansible Lint
         run: |
-          pip install ansible ansible-lint yamllint
+          pip install ansible ansible-lint
 
-      - name: Run yamllint
-        run: yamllint .
+      - name: Install Ansible Galaxy Collections
+        run: ansible-galaxy collection install -r requirements.yml
 
       - name: Run ansible-lint
         run: ansible-lint
