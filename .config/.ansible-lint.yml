@@ -1,0 +1,3 @@
+---
+skip_list:
+  - unnamed[all]  # skip linting errors about unnamed plays (import_playbook usage)
