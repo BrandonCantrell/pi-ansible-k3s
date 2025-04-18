@@ -1,3 +1,4 @@
+---
 # This inventory defines the hosts in your Raspberry Pi K3s cluster.
 # Each host gets an IP address and a role designation (control node or not).
 # Common SSH connection settings are handled in group_vars/all.yml.
