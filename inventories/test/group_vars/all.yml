@@ -1,0 +1,10 @@
+---
+ansible_become: true
+ansible_target_user: ansible
+git_user_email: test@example.com
+git_user_name: CI Test
+
+# Optional: no additional users to trigger user role skip
+additional_users: []
+
+k3s_become: true

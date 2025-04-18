@@ -1,0 +1,38 @@
+name: Ansible Test
+
+on:
+  push:
+    paths:
+      - '**.yml'
+      - '**.yaml'
+  pull_request:
+    paths:
+      - '**.yml'
+      - '**.yaml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Dry Run All Playbooks
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install ansible ansible-lint
+          ansible-galaxy install -r requirements.yml
+
+      - name: Syntax check
+        run: |
+          ansible-playbook -i inventories/example playbooks/site.yml --syntax-check
+
+      - name: Dry run (check mode)
+        run: |
+          ansible-playbook -i inventories/test playbooks/site.yml --check --diff
