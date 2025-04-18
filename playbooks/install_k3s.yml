@@ -1,14 +1,7 @@
 ---
-- name: Deploy K3s cluster
+- name: Install and configure K3s on control and agent nodes
   hosts: k3s_cluster
   become: true
-  vars:
-    k3s_become: true
-    k3s_version: v1.29.4+k3s1
-    k3s_control_node: "{{ hostvars[inventory_hostname].k3s_control_node | default(false) }}"
-    k3s_server:
-      disable:
-        - traefik
-        - servicelb
+
   roles:
-    - role: xanmanning.k3s
+    - xanmanning.k3s

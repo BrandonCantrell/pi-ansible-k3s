@@ -7,6 +7,8 @@ ansible_become: true
 
 # This is the user that the bootstrap playbook will create
 ansible_target_user: ansible
+ansible_pubkey_path: files/ansible.pub
+
 
 # === Git Configuration (used in some roles)
 git_user_email: drizzt@companionsofthehall.com

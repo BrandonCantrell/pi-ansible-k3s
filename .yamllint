@@ -1,3 +1,4 @@
+---
 extends: default
 
 rules:
@@ -14,3 +15,6 @@ rules:
 
   document-start:
     present: true  # Require --- at top of YAML files
+
+skip_list:
+  - unnamed[all]  # skip linting errors about unnamed plays (import_playbook usage)
