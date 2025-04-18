@@ -1,0 +1,7 @@
+# ========================================================================
+# Post-Bootstrap Connection Configuration
+# Used once the ansible user has been created and keys are in place.
+# ========================================================================
+
+ansible_user: ansible
+ansible_ssh_private_key_file: ~/.ssh/ansible_id

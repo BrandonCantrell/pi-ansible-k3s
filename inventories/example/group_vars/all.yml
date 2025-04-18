@@ -1,0 +1,23 @@
+# ========================================================================
+# Shared Variables for Bootstrap and Cluster Setup
+# ========================================================================
+
+ansible_become: true
+
+# This is the user that the bootstrap playbook will create
+ansible_target_user: ansible
+
+# === Git Configuration (used in some roles)
+git_user_email: drizzt@companionsofthehall.com
+git_user_name: Drizzt Do'Urden
+
+# === K3s Role Configuration (used post-bootstrap)
+k3s_become: true
+
+# === Optional: Additional Users
+# Uncomment to enable users.yml
+# additional_users:
+#   - name: docker
+#     sudo: true
+#   - name: localuser
+#     sudo: false

@@ -1,0 +1,43 @@
+# === SSH Keys and Secrets ===
+*.pem
+*.key
+*.pub
+*.crt
+*.enc
+*.vault
+.ssh/
+
+# === Python Artifacts ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+.env
+.venv
+
+# === Ansible ===
+*.retry
+*.log
+.ansible/
+*.vault_password
+
+# === Molecule (if used) ===
+.molecule/
+
+# === OS/System Files ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Editor Artifacts ===
+*.swp
+*.swo
+*.bak
+*.tmp
+.vscode/
+.idea/
+
+# === GitHub Workflow Logs (cached locally) ===
+.github/workflows/*.log

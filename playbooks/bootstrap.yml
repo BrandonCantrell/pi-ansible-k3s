@@ -1,0 +1,77 @@
+---
+# ========================================================================
+# Bootstrap Playbook for Raspberry Pi
+#
+# Run this once using the Pi's default user (e.g., "pi") to:
+#   - Install baseline packages
+#   - Create a dedicated Ansible user with SSH key access
+#   - Set up passwordless sudo
+#   - Set the hostname to match inventory
+#
+# Future playbooks can connect using the configured ansible_user.
+# ========================================================================
+
+- name: Bootstrap Raspberry Pi node for Ansible usage
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install baseline packages
+      ansible.builtin.apt:
+        name:
+          - curl
+          - vim
+          - git
+          - htop
+          - ca-certificates
+          - net-tools
+          - python3-pip
+        state: present
+
+    - name: Check if target user already exists
+      ansible.builtin.getent:
+        database: passwd
+        key: "{{ ansible_target_user }}"
+      register: ansible_user_check
+      ignore_errors: true
+
+    - name: Create target user
+      ansible.builtin.user:
+        name: "{{ ansible_target_user }}"
+        shell: /bin/bash
+        create_home: true
+      when: ansible_user_check.failed
+
+    - name: Ensure .ssh directory exists for target user
+      ansible.builtin.file:
+        path: "/home/{{ ansible_target_user }}/.ssh"
+        state: directory
+        owner: "{{ ansible_target_user }}"
+        group: "{{ ansible_target_user }}"
+        mode: '0700'
+      when: ansible_user_check.failed
+
+    - name: Add authorized SSH key for target user
+      ansible.builtin.copy:
+        src: "../files/{{ ansible_target_user }}.pub"
+        dest: "/home/{{ ansible_target_user }}/.ssh/authorized_keys"
+        owner: "{{ ansible_target_user }}"
+        group: "{{ ansible_target_user }}"
+        mode: '0600'
+      when: ansible_user_check.failed
+
+    - name: Allow target user passwordless sudo
+      ansible.builtin.copy:
+        dest: "/etc/sudoers.d/{{ ansible_target_user }}"
+        content: "{{ ansible_target_user }} ALL=(ALL) NOPASSWD: ALL\n"
+        mode: '0440'
+      when: ansible_user_check.failed
+
+    - name: Set hostname to match inventory name
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
