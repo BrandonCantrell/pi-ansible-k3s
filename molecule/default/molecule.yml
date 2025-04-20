@@ -1,0 +1,43 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: ../../requirements.yml
+    roles-path: ../../.ansible/roles
+
+driver:
+  name: docker
+
+platforms:
+  - name: ubuntu-arm64
+    image: arm64v8/ubuntu:22.04
+    pull: false
+    privileged: true
+    command: sleep infinity
+    dockerfile: Dockerfile.j2
+    pre_build_image: false
+    user: root
+
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      all:
+        ansible_target_user: ansible
+        remote_user: root
+        ansible_user: ansible
+        git_user_email: drizzt@companionsofthehall.com
+        git_user_name: Drizzt Do'Urden
+  lint: |
+    ansible-lint
+  env:
+    ANSIBLE_ROLES_PATH: "../../.ansible/roles:./roles"
+  config_options:
+    defaults:
+      interpreter_python: /usr/bin/python3
+      become: false
+  options:
+    user: root
+
+verifier:
+  name: ansible

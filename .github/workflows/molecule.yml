@@ -1,0 +1,42 @@
+name: Molecule Role Test
+
+on:
+  push:
+    paths:
+      - 'roles/**'
+      - '.github/workflows/molecule.yml'
+  pull_request:
+    paths:
+      - 'roles/**'
+
+jobs:
+  molecule:
+    name: Molecule Test
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:dind
+        options: --privileged
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Molecule and Ansible
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install 'molecule[docker]' ansible ansible-lint
+
+      - name: Run Molecule Test
+        run: |
+          source .venv/bin/activate
+          cd roles/pi_system_prep
+          molecule test

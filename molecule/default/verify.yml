@@ -1,0 +1,25 @@
+---
+- name: Verify pi_system_prep behavior
+  hosts: all
+  gather_facts: false
+  become: true
+
+  tasks:
+    - name: Ensure swap is disabled
+      ansible.builtin.command: swapon --summary
+      register: swap_check
+      changed_when: false
+      failed_when: swap_check.stdout != ""
+
+    - name: Check if test user exists
+      ansible.builtin.getent:
+        database: passwd
+        key: testuser
+
+    - name: Confirm baseline packages are installed
+      ansible.builtin.package_facts:
+      register: pkg_facts
+
+    - name: Check for htop (as a representative package)
+      ansible.builtin.assert:
+        that: "'htop' in pkg_facts.packages"
